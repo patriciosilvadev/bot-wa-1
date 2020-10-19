@@ -7,8 +7,9 @@ const {Viewers} = require('./model')
 const bodyParse = require('body-parser')
 const jwt = require('jsonwebtoken')
 const authConf = require('./config/auth.json')
+const cors = require('cors');
 
-
+app.use(cors())
 app.use(express.static('public'));
 app.use(bodyParse.json());
 app.use(bodyParse.urlencoded({extended:false}));

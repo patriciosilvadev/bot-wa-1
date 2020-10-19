@@ -9,12 +9,14 @@ exports.query = {
         `
         return { query, params }
     },
+
     selectUsers () {
         const query = `
         SELECT * FROM users_now ;
         `
         return query;
     },
+
     VerifyUser (data) {
         const params = [
             data.user
@@ -24,12 +26,14 @@ exports.query = {
         `
         return { query, params }
     },
+
     selectAfterUsers () {
         const query = `
         SELECT * FROM after_users ;
         `
         return query;
     },
+
     UpdateAfterUsers(data)
     {
         const params = [
@@ -45,6 +49,7 @@ exports.query = {
         return { query, params }
 
     },
+
     CreateNewUsers(data)
     {
         const params = [
@@ -64,6 +69,7 @@ exports.query = {
         return { query, params }
 
     },
+
     VerifyPhone (data) {
         const params = [
             data.Phone
@@ -72,6 +78,60 @@ exports.query = {
         SELECT * FROM users_now WHERE number= ?;
         `
         return { query, params }
+    },
+
+    VerifyResponses (data) {
+        const params = [
+            data.idUser
+        ]
+        const query = `
+        SELECT * FROM responses WHERE idUser= ?;
+        `
+        return { query, params }
+    },
+    
+    CreateNewResponses(data)
+    {
+        const params = [
+            data.idUser,
+            data.responseType,
+            data.msg,
+            data.responseText,
+            data.responseImg,
+            data.responseVideo,
+            data.responseAudio,
+            data.responseFile
+        ]
+        const query = `
+        INSERT INTO responses SET
+        idUser= ? , 
+        responseType = ?,
+        msg = ?,
+        responseText = ?,
+        responseImg = ?,
+        responseVideo = ?,
+        responseAudio = ?,
+        responseFile = ?;
+        `
+        //SET SQL_SAFE_UPDATES=0;
+        return { query, params }
+
+    },
+
+    DeleteResponses(data)
+    {
+        const params = [
+            data.id,
+            data.idUser
+        ]
+        const query = `
+        DELETE FROM responses WHERE
+        id = ? AND
+        idUser= ? 
+        `
+        //SET SQL_SAFE_UPDATES=0;
+        return { query, params }
+
     },
 
 }

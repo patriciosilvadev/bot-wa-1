@@ -54,12 +54,13 @@ exports.Viewers = {
 
         if (result.rows == '') {
             
-            return { msg: "Ops...", status: 400, data }
+            return { msg: "Ops...", status: 400 }
         }
         
         return (result.rows); 
         
     },
+
     async selectAfterUsers () {
         
         const sql = queries.query.selectAfterUsers()
@@ -86,6 +87,7 @@ exports.Viewers = {
             return (result.rows); 
         }
     },
+
     async VerifyPhone(payload) {
         
         const sql = queries.query.VerifyPhone(payload)
@@ -110,6 +112,56 @@ exports.Viewers = {
 
         return { msg: "OK", status: 200, Usuarios: result.rows }
     },
+
+    async VerifyResponses(payload) {
+        
+        const sql = queries.query.VerifyResponses(payload)
+        const result = await execute(sql)
+
+        if (result.rows == '') {
+            
+            return { msg: "Ok", status: 200, payload }
+        }else
+        {
+            return { msg: "Exist", status: 400}; 
+        }
+    },
+    
+    async CreateNewResponses(payload) {
+        
+        if (payload) {
+            
+            const sql = queries.query.CreateNewResponses(payload)
+            //console.log(sql);
+            const result = await execute(sql)
+            
+            if (!result || !result.rows) {
+                
+               return { msg: "Ops...", status: 400, payload }
+          
+            }
+            
+            return { msg: "OK", status: 201, payload }
+        }
+        
+        return { msg: "NÃO INCLUÍDO", status: 400, data }
+    },
+
+    async DeleteResponses(payload) {
+        
+        if (payload) {
+            
+            const sql = queries.query.DeleteResponses(payload)
+            //console.log(sql);
+            const result = await execute(sql)
+            
+            if (!result || !result.rows) {
+               return { msg: "Ops...", status: 400, payload }
+            }
+            return { msg: "OK", status: 201, payload }
+        }
+        return { msg: "NÃO INCLUÍDO", status: 400, payload }
+    },  
 }
 
 
