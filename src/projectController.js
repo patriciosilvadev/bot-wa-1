@@ -13,40 +13,40 @@ router.get('/', async (req,res) => {
     {
         switch(responses[cont].responseType){
             case "Text":
-                responsesVerify= {
+                responsesVerify = [...responsesVerify,{
                     id: responses[cont].id,
                     idUser: responses[cont].idUser,
                     responseType: responses[cont].responseType,
                     msg: responses[cont].msg,
                     response: responses[cont].responseText,
-                }
+                }]
                 break;
             case "img":
-                responsesVerify= {
+                responsesVerify= [...responsesVerify,{
                     id: responses[cont].id,
                     idUser: responses[cont].idUser,
                     responseType: responses[cont].responseType,
                     msg: responses[cont].msg,
                     response: responses[cont].responseImg,
-                }
+                }]
                 break;
             case "video":
-            responsesVerify= {
+            responsesVerify= [...responsesVerify,{
                 id: responses[cont].id,
                 idUser: responses[cont].idUser,
                 responseType: responses[cont].responseType,
                 msg: responses[cont].msg,
                 response: responses[cont].responseVideo,
-            }
+            }]
             break;
             case "file":
-            responsesVerify= {
+            responsesVerify= [...responsesVerify,{
                 id: responses[cont].id,
                 idUser: responses[cont].idUser,
                 responseType: responses[cont].responseType,
                 msg: responses[cont].msg,
                 response: responses[cont].responseFile,
-            }
+            }]
             break;
         }
     }
