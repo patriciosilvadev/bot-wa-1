@@ -2,12 +2,25 @@ const venom = require('./src/connect');
 const {connect} = venom;
 const { isEmpty, split } = require("lodash");
 const {Viewers}  = require("./src/model");
+const venom_bot = require('venom-bot');
 var CronJob = require('cron').CronJob;
 var http = require('./src/http');
 const configs = require('./global-config');
 const { response } = require('express');
 
 
+// void async function() {
+//   var user = await afterusers()
+//   for(var cont = 0 ; cont <= user.length ;cont++)
+//   {
+//       connect(user[cont].cliente).then((client) => {start(client)})
+//         .catch((erro) => {
+//         console.log(erro);
+//       });
+//   } 
+// }()
+
+//loop para verificar mudanças no banco de dados
 var job = new CronJob('*/5 * * * * *', async function() {
   var nowuser = await nowusers()
   var afteruser = await afterusers()
@@ -52,12 +65,13 @@ var job = new CronJob('*/5 * * * * *', async function() {
 job.start();
 
 
+//loop a cada uma hora para verificar conexoes
 var jobH = new CronJob('* 0 * * * *', async function() {
 
   var afteruser = await afterusers()
   for(var cont = 0 ; cont <= afteruser.length -1 ;cont++)
   {
-
+    
     connect(afteruser[cont].cliente)
     .then((client) => {start(client)})
     .catch((erro) => {
@@ -67,19 +81,7 @@ var jobH = new CronJob('* 0 * * * *', async function() {
 }, null, true, 'America/Sao_Paulo');
 jobH.start();
 
-
-void async function() {
-  var user = await afterusers()
-  for(var cont = 0 ; cont <= user.length ;cont++)
-  {
-      connect(user[cont].cliente).then((client) => {start(client)})
-        .catch((erro) => {
-        console.log(erro);
-      });
-  } 
-  
-}()
-
+//funcao require do banco
 async function nowusers()
 {
   var users = await Viewers.SelectUser()
@@ -92,6 +94,7 @@ async function afterusers()
 }
 
 
+//funcao para escutar e enviar mensagens
 async function start(client) {
   //console.log(client)
   client.onMessage(async (message) => {

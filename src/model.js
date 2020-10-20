@@ -143,7 +143,7 @@ exports.Viewers = {
             return { msg: "OK", status: 201, payload }
         }
         
-        return { msg: "NÃO INCLUÍDO", status: 400, data }
+        return { msg: "NÃO INCLUÍDO", status: 400, payload }
     },
 
     async DeleteResponses(payload) {

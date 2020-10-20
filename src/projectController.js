@@ -8,8 +8,49 @@ router.use(authMiddlewares);
 
 router.get('/', async (req,res) => {
     const responses = await Viewers.VerifyResponses(req.query)
-    const responsesVerify = 0;
-    return res.send({ ok: true, UserId: req.UserId, responses: responses});
+    var responsesVerify = [];
+    for(var cont = 0 ; cont<= responses.length-1 ; cont++)
+    {
+        switch(responses[cont].responseType){
+            case "Text":
+                responsesVerify= {
+                    id: responses[cont].id,
+                    idUser: responses[cont].idUser,
+                    responseType: responses[cont].responseType,
+                    msg: responses[cont].msg,
+                    response: responses[cont].responseText,
+                }
+                break;
+            case "img":
+                responsesVerify= {
+                    id: responses[cont].id,
+                    idUser: responses[cont].idUser,
+                    responseType: responses[cont].responseType,
+                    msg: responses[cont].msg,
+                    response: responses[cont].responseImg,
+                }
+                break;
+            case "video":
+            responsesVerify= {
+                id: responses[cont].id,
+                idUser: responses[cont].idUser,
+                responseType: responses[cont].responseType,
+                msg: responses[cont].msg,
+                response: responses[cont].responseVideo,
+            }
+            break;
+            case "file":
+            responsesVerify= {
+                id: responses[cont].id,
+                idUser: responses[cont].idUser,
+                responseType: responses[cont].responseType,
+                msg: responses[cont].msg,
+                response: responses[cont].responseFile,
+            }
+            break;
+        }
+    }
+    return res.send({ ok: true, UserId: req.UserId, responses: responsesVerify});
 })
 
 router.post('/newResponse', async (req,res) => {
