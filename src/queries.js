@@ -81,13 +81,26 @@ exports.query = {
     },
 
     VerifyResponses (data) {
-        const params = [
-            data.idUser
-        ]
-        const query = `
-        SELECT * FROM responses WHERE idUser= ?;
-        `
-        return { query, params }
+        if(data.id)
+        {
+            const params = [
+                data.id
+            ]
+            const query = `
+            SELECT * FROM responses WHERE idUser= ?;
+            `
+            return { query, params }
+        }
+        if(data.idUser)
+        {
+            const params = [
+                data.idUser
+            ]
+            const query = `
+            SELECT * FROM responses WHERE idUser= ?;
+            `
+            return { query, params }
+        }
     },
     
     CreateNewResponses(data)
@@ -131,8 +144,16 @@ exports.query = {
         `
         //SET SQL_SAFE_UPDATES=0;
         return { query, params }
-
     },
 
+    UserSelectResponse(data) {
+        const params = [
+            data
+        ]
+        const query = `
+        SELECT * FROM users_now WHERE number= ?;
+        `
+        return { query, params }
+    },
 }
 

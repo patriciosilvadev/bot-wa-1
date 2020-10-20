@@ -119,11 +119,10 @@ exports.Viewers = {
         const result = await execute(sql)
 
         if (result.rows == '') {
-            
-            return { msg: "Ok", status: 200, payload }
+            return { msg: "Don't responses", status: 400, payload }
         }else
         {
-            return { msg: "Exist", status: 400}; 
+            return (result.rows); 
         }
     },
     
@@ -162,6 +161,21 @@ exports.Viewers = {
         }
         return { msg: "NÃO INCLUÍDO", status: 400, payload }
     },  
+
+    async UserSelectResponse(payload) {
+        
+        const sql = queries.query.UserSelectResponse(payload)
+        const result = await execute(sql)
+
+        if (result.rows == '') {
+            
+            return { msg: "Error", status: 400, payload }
+        }else
+        {
+            return (result.rows); 
+        }
+    },
+    
 }
 
 

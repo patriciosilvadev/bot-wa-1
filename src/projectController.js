@@ -8,6 +8,7 @@ router.use(authMiddlewares);
 
 router.get('/', async (req,res) => {
     const responses = await Viewers.VerifyResponses(req.query)
+    const responsesVerify = 0;
     return res.send({ ok: true, UserId: req.UserId, responses: responses});
 })
 

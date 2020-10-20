@@ -1,10 +1,11 @@
 const venom = require('./src/connect');
 const {connect} = venom;
-const { isEmpty } = require("lodash");
+const { isEmpty, split } = require("lodash");
 const {Viewers}  = require("./src/model");
 var CronJob = require('cron').CronJob;
 var http = require('./src/http');
-const configs = require('./global-config')
+const configs = require('./global-config');
+const { response } = require('express');
 
 
 var job = new CronJob('*/5 * * * * *', async function() {
@@ -91,24 +92,54 @@ async function afterusers()
 }
 
 
-function start(client) {
+async function start(client) {
   //console.log(client)
-  client.onMessage((message) => {
-    if (message.body === 'QR' && message.isGroupMsg === false) {
-      client
-        //.sendText(message.from, 'Isso ai continua mandando hi !!')
-        .sendImage(
-          message.from,
-          `./rogerio.png`,
-          `rogerio`,
-          'teste de imagem'
-        )
-        .then((result) => {
-         // console.log('Result: ', result); //return object success
-        })
-        .catch((erro) => {
-          console.error('Error when sending: ', erro); //return object error
-        });
+  client.onMessage(async (message) => {
+    if(message.to)
+    {
+      
+      const phoneUser = split(message.to,'@')
+      const users = await Viewers.UserSelectResponse(phoneUser[0])
+      const responses = await Viewers.VerifyResponses(users[0])
+      
+      for(var cont = 0; cont <= responses.length-1; cont++)
+      {
+        
+        if (message.body === responses[cont].msg && message.isGroupMsg === false) 
+        {
+          
+          switch (responses[cont].responseType)
+          {
+            case 'Text':
+              client.sendText(message.from, responses[cont].responseText)
+              .then((result) => {
+                //console.log('Result: ', result); //return object success
+              })
+              .catch((erro) => {
+                console.error('Error when sending: ', erro); //return object error
+              });
+              break;
+           /* case 'img':
+              client.sendImage(
+                message.from,
+                `${responses[cont].responseImg}`,
+                `${responses[cont].responseImg}`,
+                'teste de imagem'
+              )
+              .then((result) => {
+               // console.log('Result: ', result); //return object success
+              })
+              .catch((erro) => {
+                console.error('Error when sending: ', erro); //return object error
+              });
+              break;
+            case 'video':
+            case 'audio':
+            case 'file':*/
+          }
+        }
+      }
+    
     }
   });
 }
